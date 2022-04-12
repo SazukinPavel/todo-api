@@ -1,13 +1,22 @@
-import { Module } from '@nestjs/common';
+import { AuthMiddleware } from './middlewares/AuthMiddleware';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+import { TodosModule } from './todos/todos.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(),UsersModule, AuthModule],
+  imports: [TypeOrmModule.forRoot(),UsersModule, AuthModule, TodosModule],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(
+      AuthMiddleware
+    ).forRoutes('*')
+  }
+
+}

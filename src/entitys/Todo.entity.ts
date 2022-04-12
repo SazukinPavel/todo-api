@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm"
+import { UserEntity } from 'src/entitys/User.entity';
+import { Column, CreateDateColumn, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm"
 
 @Entity('todos')
 export class TodoEntity{
@@ -17,5 +18,8 @@ export class TodoEntity{
 
     @Column()
     description:string
+
+    @ManyToOne(()=>UserEntity,u=>u.todos)
+    owner:UserEntity
 
 }

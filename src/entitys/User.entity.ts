@@ -1,5 +1,6 @@
 import { hash } from "bcryptjs";
-import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { BeforeInsert, Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { TodoEntity } from "./Todo.entity";
 
 @Entity('users')
 export class UserEntity{
@@ -21,6 +22,9 @@ export class UserEntity{
 
     @Column()
     role:string
+
+    @OneToMany(()=>TodoEntity,(t)=>t.owner)
+    todos:TodoEntity[]
 
     @BeforeInsert()
     async hashPassword() {

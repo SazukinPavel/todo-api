@@ -40,8 +40,8 @@ export class AuthService {
         return {token:this.generateToken(user),user}
     }
 
-    private generateToken({email,username,role}:UserEntity){
-        return sign({email,username,role},JWT_SECRET_KEY)
+    private generateToken({email,username,role,id}:UserEntity){
+        return sign({email,username,role,id},JWT_SECRET_KEY)
     }
 
 }

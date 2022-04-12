@@ -13,6 +13,10 @@ export class UsersService {
         return await this.userRepo.save({...dto,role:'USER'})
     }
 
+    findById(id:string){
+        return this.userRepo.findOne(id)
+    }
+
     findByName(name:string){
         return this.userRepo.findOne({where:{username:name}})
     }

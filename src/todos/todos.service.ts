@@ -1,10 +1,11 @@
+import { PaginationQueryDto } from './dto/PaginationQuery.dto';
 import { UpdateTodoDto } from './dto/UpdateTodo.dto';
 import { UserEntity } from 'src/entitys/User.entity';
 import { AddTodoDto } from './dto/AddTodo.dto';
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TodoEntity } from 'src/entitys/Todo.entity';
-import { Repository } from 'typeorm';
+import { FindManyOptions, Repository } from 'typeorm';
 
 @Injectable()
 export class TodosService {
@@ -15,8 +16,19 @@ export class TodosService {
         return this.todoRepo.save({...dto,owner:user})
     }
 
-    getUserTodo(user:UserEntity){ 
-        return this.todoRepo.find({where:{owner:user}})
+    getUserTodo(user:UserEntity,{page,limit}:PaginationQueryDto){ 
+        const options:FindManyOptions={where:{owner:user},order:{'createdAt':'ASC'}}
+        if(page && limit){
+            options.take=limit
+            options.skip=limit*page
+        }else if(limit){
+            options.take=limit
+        }
+        return this.todoRepo.find(options)
+    }
+
+    getUserTodoCount(user:UserEntity){ 
+        return this.todoRepo.count({where:{owner:user}})
     }
 
     async updateTodo(dto:UpdateTodoDto,user:UserEntity){

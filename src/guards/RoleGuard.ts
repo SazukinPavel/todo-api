@@ -4,7 +4,6 @@ import { Reflector } from '@nestjs/core';
 import { Request } from 'src/types/Request';
 
 export class RoleGuard implements CanActivate{
-
     constructor(private reflector:Reflector){}
 
     canActivate(context: ExecutionContext): boolean{
@@ -15,5 +14,4 @@ export class RoleGuard implements CanActivate{
         }
         return false
     }
-
 }

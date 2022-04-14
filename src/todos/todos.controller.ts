@@ -1,7 +1,8 @@
+import { PaginationQueryDto } from './dto/PaginationQuery.dto';
 import { UpdateTodoDto } from './dto/UpdateTodo.dto';
 import { TodosService } from './todos.service';
 import { AddTodoDto } from './dto/AddTodo.dto';
-import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import { User } from 'src/decorators/User.decorator';
 import { AuthGuard } from 'src/guards/AuthGuard';
 
@@ -19,8 +20,11 @@ export class TodosController {
 
     @Get()
     @UseGuards(AuthGuard)
-    getTodo(@User() user){
-        return this.todoService.getUserTodo(user)
+    async getTodo(@User() user,@Query('pagination') pagination:PaginationQueryDto,@Query('count') count:boolean){
+        if(count){
+            return this.todoService.getUserTodoCount(user)
+        }
+        return this.todoService.getUserTodo(user,pagination)
     }
 
     @Put()

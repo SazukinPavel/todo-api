@@ -16,9 +16,12 @@ export class TodoEntity{
     @Column()
     title:string
 
-    @Column()
+    @Column({default:''})
     description:string
 
+    @Column({default:false})
+    completed:boolean
+    
     @ManyToOne(()=>UserEntity,u=>u.todos)
     owner:UserEntity
 
